@@ -1,0 +1,13 @@
+:root { --primary: #FF5C00; --bg: #F5F5F7; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.header { background: #fff; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
+.flex-sb { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: bold; cursor: pointer; }
+.logo span { color: var(--primary); }
+.btn { border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-secondary { background: #eee; color: #333; }
+.btn-full { width: 100%; display: block; text-align: center; }
+.card { background: #fff; border-radius: 20px; overflow: hidden; transition: 0.3s; }
+.card:hover { transform: translateY(-5px); }

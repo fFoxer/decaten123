@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — FoodFast</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Сетка страницы корзины */
+        .cart-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 380px; 
+            gap: 30px; 
+            margin-top: 30px; 
+            align-items: start; 
+        }
+
+        /* Карточка товара в корзине */
+        .cart-item { 
+            display: grid; 
+            grid-template-columns: 80px 1fr 120px 100px; 
+            align-items: center; 
+            gap: 20px;
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+        }
+
+        .item-img { 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 12px; 
+            background: #f0f0f0 center/cover; 
+        }
+
+        .item-info h3 { margin: 0 0 5px 0; font-size: 18px; }
+        .item-info p { margin: 0; color: #888; font-size: 14px; }
+
+        /* Кнопки управления количеством */
+        .qty-btns { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 12px; 
+            background: #f5f5f7; 
+            padding: 8px; 
+            border-radius: 12px;
+            width: 100px; 
+        }
+
+        .q-btn { 
+            border: none; 
+            background: #fff; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .price-total { 
+            font-weight: bold; 
+            font-size: 18px; 
+            text-align: right; 
+        }
+
+        /* Правая колонка (Оформление) */
+        .checkout-side { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 16px; }
+        .total-row { font-size: 22px; font-weight: bold; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; }
+        
+        .address-input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .cart-grid { grid-template-columns: 1fr; }
+            .cart-item { grid-template-columns: 70px 1fr 100px; }
+            .price-total { grid-column: 3; text-align: right; }
+            .qty-btns { grid-column: 2; width: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container flex-sb">
+            <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span></div>
+            <a href="index.php" style="text-decoration: none; color: var(--primary); font-weight: 600;">← Вернуться в меню</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 style="margin: 30px 0;">Моя корзина</h1>
+        
+        <div id="cart-wrapper">
+            <!-- Сюда JS вставит сетку или сообщение о пустоте -->
+        </div>
+    </main>
+
+    <script>
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const wrapper = document.getElementById('cart-wrapper');
+            
+            if (cart.length === 0) {
+                wrapper.innerHTML = `
+                    <div style="text-align:center; padding:80px 20px; background:#fff; border-radius:30px;">
+                        <span style="font-size: 50px;">🛒</span>
+                        <h2>В корзине пока пусто</h2>
+                        <p style="color:#888;">Выберите что-нибудь вкусное в меню</p>
+                        <br>
+                        <a href="index.php" class="btn btn-primary">Перейти к ресторанам</a>
+                    </div>`;
+                return;
+            }
+
+            let totalSum = 0;
+            let itemsHtml = '';
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                totalSum += itemTotal;
+                itemsHtml += `
+                    <div class="cart-item">
+                        <div class="item-img" style="background-image: url('${item.img}')"></div>
+                        <div class="item-info">
+                            <h3>${item.name}</h3>
+                            <p>${item.price} ₽</p>
+                        </div>
+                        <div class="qty-btns">
+                            <button class="q-btn" onclick="updateQty(${index}, -1)">-</button>
+                            <span style="font-weight:600">${item.qty}</span>
+                            <button class="q-btn" onclick="updateQty(${index}, 1)">+</button>
+                        </div>
+                        <div class="price-total">${itemTotal} ₽</div>
+                    </div>`;
+            });
+
+            wrapper.innerHTML = `
+                <div class="cart-grid">
+                    <div id="items-list">${itemsHtml}</div>
+                    
+                    <aside class="checkout-side">
+                        <h3 style="margin-top:0">Детали заказа</h3>
+                        <div class="summary-row">
+                            <span>Блюда</span>
+                            <span>${totalSum} ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Доставка</span>
+                            <span style="color:#27AE60; font-weight:600;">Бесплатно</span>
+                        </div>
+
+                        <div style="margin-top:25px;">
+                            <label style="font-weight:600; font-size:14px; color:#555;">Адрес доставки:</label>
+                            <input type="text" id="delivery-address" class="address-input" placeholder="Улица, дом, квартира">
+                        </div>
+
+                        <div class="summary-row total-row">
+                            <span>Итого</span>
+                            <span>${totalSum} ₽</span>
+                        </div>
+
+                        <button class="btn btn-primary btn-full" style="height:55px; margin-top:20px;" onclick="placeOrder()">
+                            Оформить заказ
+                        </button>
+                    </aside>
+                </div>`;
+        }
+
+        window.updateQty = function(index, delta) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        };
+
+        function placeOrder() {
+            const address = document.getElementById('delivery-address').value;
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            if (!address || address.trim().length < 5) {
+                alert("Пожалуйста, введите полный адрес доставки!");
+                return;
+            }
+
+            // Сохраняем финальные данные для страницы трекера
+            localStorage.setItem('last_address', address);
+            localStorage.setItem('order_details', JSON.stringify(cart));
+            
+            // Очищаем корзину (так как заказ оформлен)
+            localStorage.removeItem('cart');
+            
+            // Переходим на страницу статуса
+            window.location.href = 'order_status.php';
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+</body>
+</html>
