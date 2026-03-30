@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Админ-панель — Управление</title>
+    <title>Админ-панель</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
