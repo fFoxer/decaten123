@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodFast — Доставка из ресторанов</title>
+    <title>FoodFast — Хеллоуинская доставка!</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Подключаем жуткий шрифт для заголовков -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
         /* Стили для сетки ресторанов */
         .grid { 
@@ -16,85 +20,97 @@
         }
         
         .restaurant-card {
-            background: #fff;
+            background: #2A2A2A; /* Темный фон для карточки */
             border-radius: 24px;
             overflow: hidden;
             text-decoration: none;
-            color: inherit;
+            color: #E0E0E0; /* Светлый текст */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: block;
-            border: 1px solid #eee;
+            border: 1px solid #444; /* Темная граница */
         }
-
         .restaurant-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(255, 92, 0, 0.3); /* Оранжевое свечение */
         }
-
         .res-img {
             height: 200px;
             background-size: cover;
             background-position: center;
             position: relative;
         }
-
         .res-badge {
             position: absolute;
             bottom: 15px;
             left: 15px;
-            background: #fff;
+            background: #1a1a1a;
+            color: var(--primary);
             padding: 5px 12px;
             border-radius: 10px;
             font-weight: bold;
             font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-
         .res-info { padding: 20px; }
-        .res-info h3 { margin: 0 0 8px 0; font-size: 22px; }
-        .res-meta { color: #888; font-size: 15px; display: flex; gap: 10px; }
+        .res-info h3 { 
+            margin: 0 0 8px 0; 
+            font-size: 28px; /* Увеличим шрифт */
+            font-family: 'Creepster', cursive; /* Применяем жуткий шрифт */
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .res-meta { color: #aaa; font-size: 15px; display: flex; gap: 10px; }
         
         .categories { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; padding-bottom: 5px; }
         .cat-item { 
-            background: #fff; padding: 12px 24px; border-radius: 25px; 
-            cursor: pointer; white-space: nowrap; transition: 0.3s;
-            border: 1px solid #eee; font-weight: 500;
+            background: #333; 
+            color: #ddd;
+            padding: 12px 24px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            white-space: nowrap; 
+            transition: 0.3s;
+            border: 1px solid #555; 
+            font-weight: 500;
         }
-        .cat-item.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .cat-item.active, .cat-item:hover { 
+            background: var(--primary); 
+            color: #000; /* Темный текст на оранжевом фоне */
+            border-color: var(--primary); 
+            transform: scale(1.05);
+        }
         .restaurant-card.hidden { display: none; }
     </style>
 </head>
 <body>
-
     <header class="header">
         <div class="container flex-sb">
             <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span></div>
             
             <div class="auth-block" style="display: flex; align-items: center; gap: 20px;">
                 <?php if(isset($_SESSION['user_name'])): ?>
-                    <span style="font-size: 14px;">Привет, <b><?= htmlspecialchars($_SESSION['user_name']) ?></b></span>
-                    <a href="logout.php" style="font-size: 12px; color: #888; text-decoration: none;">Выйти</a>
+                    <span style="font-size: 14px; color: #eee;">Привет, <b><?= htmlspecialchars($_SESSION['user_name']) ?></b></span>
+                    <a href="logout.php" style="font-size: 12px; color: #aaa; text-decoration: none;">Выйти</a>
                 <?php else: ?>
                     <a href="login.php" class="btn btn-secondary">Войти</a>
                 <?php endif; ?>
                 
-                <a href="cart.html" class="btn btn-primary" style="text-decoration: none;">
-                    🛒 <span id="cart-count">0</span>
+                <a href="cart.html" class="btn btn-primary" style="text-decoration: none; font-size: 20px;">
+                    🎃 <span id="cart-count">0</span>
                 </a>
             </div>
         </div>
     </header>
-
     <main class="container">
-        <h1 style="margin-top: 40px; font-size: 36px;">Рестораны в Твери</h1>
-
+        <h1 style="margin-top: 40px; font-size: 52px; font-family: 'Creepster', cursive; text-align: center; color: #fff; letter-spacing: 2px;">🎃 Жутко вкусные рестораны 🎃</h1>
+        
         <!-- Фильтр по типам кухни -->
         <section class="categories">
             <div class="cat-item active" data-filter="all">Все</div>
-            <div class="cat-item" data-filter="burgers">🍔 Бургеры</div>
-            <div class="cat-item" data-filter="pizza">🍕 Пицца</div>
-            <div class="cat-item" data-filter="sushi">🍣 Суши</div>
-            <div class="cat-item" data-filter="desserts">🍰 Десерты</div>
+            <div class="cat-item" data-filter="burgers">👻 Бургеры</div>
+            <div class="cat-item" data-filter="pizza">💀 Пицца</div>
+            <div class="cat-item" data-filter="sushi">🕷️ Суши</div>
+            <div class="cat-item" data-filter="desserts">🍬 Десерты</div>
         </section>
 
         <div class="grid">
@@ -102,7 +118,6 @@
             // Получаем список ресторанов из базы данных
             $query = "SELECT * FROM restaurants";
             $result = $conn->query($query);
-
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     ?>
@@ -122,12 +137,11 @@
                     <?php
                 }
             } else {
-                echo "<p>Рестораны пока не добавлены в базу данных.</p>";
+                echo "<p style='color: #fff;'>Рестораны пока не добавлены в базу данных.</p>";
             }
             ?>
         </div>
     </main>
-
     <script>
         // 1. Фильтрация ресторанов по категориям
         document.querySelectorAll('.cat-item').forEach(item => {
@@ -152,9 +166,7 @@
             const count = cart.reduce((sum, item) => sum + item.qty, 0);
             document.getElementById('cart-count').innerText = count;
         }
-
         document.addEventListener('DOMContentLoaded', updateGlobalBadge);
     </script>
-
 </body>
 </html>

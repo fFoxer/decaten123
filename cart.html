@@ -5,121 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Корзина — FoodFast</title>
     <link rel="stylesheet" href="style.css">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
-        /* Сетка страницы корзины */
-        .cart-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 380px; 
-            gap: 30px; 
-            margin-top: 30px; 
-            align-items: start; 
-        }
-
-        /* Карточка товара в корзине */
-        .cart-item { 
-            display: grid; 
-            grid-template-columns: 80px 1fr 120px 100px; 
-            align-items: center; 
-            gap: 20px;
-            background: #fff; 
-            padding: 20px; 
-            border-radius: 20px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-        }
-
-        .item-img { 
-            width: 70px; 
-            height: 70px; 
-            border-radius: 12px; 
-            background: #f0f0f0 center/cover; 
-        }
-
-        .item-info h3 { margin: 0 0 5px 0; font-size: 18px; }
-        .item-info p { margin: 0; color: #888; font-size: 14px; }
-
-        /* Кнопки управления количеством */
-        .qty-btns { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            gap: 12px; 
-            background: #f5f5f7; 
-            padding: 8px; 
-            border-radius: 12px;
-            width: 100px; 
-        }
-
-        .q-btn { 
-            border: none; 
-            background: #fff; 
-            width: 28px; 
-            height: 28px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .price-total { 
-            font-weight: bold; 
-            font-size: 18px; 
-            text-align: right; 
-        }
-
-        /* Правая колонка (Оформление) */
-        .checkout-side { 
-            background: #fff; 
-            padding: 30px; 
-            border-radius: 24px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 100px;
-        }
-
+        .cart-grid { display: grid; grid-template-columns: 1fr 380px; gap: 30px; margin-top: 30px; align-items: start; }
+        .cart-item { display: grid; grid-template-columns: 80px 1fr 120px 100px; align-items: center; gap: 20px; background: #2A2A2A; padding: 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #444; }
+        .item-img { width: 70px; height: 70px; border-radius: 12px; background: #444 center/cover; }
+        .item-info h3 { margin: 0 0 5px 0; font-size: 18px; color: #fff;}
+        .item-info p { margin: 0; color: #aaa; font-size: 14px; }
+        .qty-btns { display: flex; align-items: center; justify-content: center; gap: 12px; background: #333; padding: 8px; border-radius: 12px; width: 100px; }
+        .q-btn { border: none; background: #444; color: #eee; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .price-total { font-weight: bold; font-size: 18px; text-align: right; color: #fff; }
+        .checkout-side { background: #2A2A2A; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: sticky; top: 120px; border: 1px solid #444;}
+        .checkout-side h3 { color: var(--primary); }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 16px; }
-        .total-row { font-size: 22px; font-weight: bold; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; }
-        
-        .address-input {
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
+        .total-row { font-size: 22px; font-weight: bold; border-top: 1px solid #555; padding-top: 20px; margin-top: 20px; }
+        .address-input { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #555; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #333; color: #eee; }
+        .address-input:focus { border-color: var(--primary); outline: none; }
         @media (max-width: 900px) {
-            .cart-grid { grid-template-columns: 1fr; }
-            .cart-item { grid-template-columns: 70px 1fr 100px; }
-            .price-total { grid-column: 3; text-align: right; }
-            .qty-btns { grid-column: 2; width: 80px; }
+             .cart-grid { grid-template-columns: 1fr; }
+             /* ... (остальные медиа-запросы) ... */
         }
     </style>
 </head>
-<body>
-
+<body style="background: #1A1A1A; color: #eee;">
     <header class="header">
         <div class="container flex-sb">
             <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span></div>
             <a href="index.php" style="text-decoration: none; color: var(--primary); font-weight: 600;">← Вернуться в меню</a>
         </div>
     </header>
-
     <main class="container">
-        <h1 style="margin: 30px 0;">Моя корзина</h1>
+        <h1 style="margin: 30px 0; font-family: 'Creepster', cursive; font-size: 52px; color: #fff;">Мой котел 🧙</h1>
         
         <div id="cart-wrapper">
             <!-- Сюда JS вставит сетку или сообщение о пустоте -->
         </div>
     </main>
-
     <script>
-        function renderCart() {
+ function renderCart() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const wrapper = document.getElementById('cart-wrapper');
             

@@ -1,13 +1,94 @@
-:root { --primary: #FF5C00; --bg: #F5F5F7; }
-body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
-.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-.header { background: #fff; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
-.flex-sb { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 24px; font-weight: bold; cursor: pointer; }
-.logo span { color: var(--primary); }
-.btn { border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; }
-.btn-primary { background: var(--primary); color: #fff; }
-.btn-secondary { background: #eee; color: #333; }
-.btn-full { width: 100%; display: block; text-align: center; }
-.card { background: #fff; border-radius: 20px; overflow: hidden; transition: 0.3s; }
-.card:hover { transform: translateY(-5px); }
+:root { 
+    --primary: #FF5C00; 
+    --bg: #1A1A1A; /* Очень темный фон */
+}
+
+body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: var(--bg); 
+    margin: 0; 
+    color: #E0E0E0; /* Светлый цвет текста по умолчанию */
+}
+
+.container { 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+}
+
+.header { 
+    background: #252525; /* Фон шапки чуть светлее основного */
+    padding: 15px 0; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Более выраженная тень */
+    position: sticky; 
+    top: 0; 
+    z-index: 100;
+    border-bottom: 2px solid var(--primary); /* Оранжевая полоска снизу */
+}
+
+.flex-sb { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.logo { 
+    font-size: 30px; /* Увеличим лого */
+    font-family: 'Creepster', cursive; /* Применяем жуткий шрифт */
+    font-weight: bold; 
+    cursor: pointer;
+    color: #fff;
+    letter-spacing: 1.5px;
+}
+
+.logo span { 
+    color: var(--primary); 
+    text-shadow: 0 0 10px var(--primary); /* Добавим свечение */
+}
+
+.btn { 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-weight: 600; 
+    text-decoration: none; 
+    transition: 0.3s;
+}
+
+.btn-primary { 
+    background: var(--primary); 
+    color: #fff; 
+    box-shadow: 0 0 15px rgba(255, 92, 0, 0.5);
+}
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 92, 0, 0.8);
+}
+
+.btn-secondary { 
+    background: #444; 
+    color: #eee; 
+}
+.btn-secondary:hover {
+    background: #555;
+}
+
+.btn-full { 
+    width: 100%; 
+    display: block; 
+    text-align: center; 
+}
+
+.card { 
+    background: #2A2A2A; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    transition: 0.3s; 
+    border: 1px solid #444;
+}
+
+.card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 25px rgba(255, 92, 0, 0.3);
+}
