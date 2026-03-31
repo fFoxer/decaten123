@@ -1,6 +1,5 @@
 <?php 
-session_start(); // ОБЯЗАТЕЛЬНО для работы авторизации
-require 'db.php'; 
+require 'db.php'; // Убедись, что в db.php есть проверка session_status()
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $p = $_POST['phone']; 
@@ -10,15 +9,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($p === 'admin' && $pass === 'admin') {
         $_SESSION['user_role'] = 'admin';
         $_SESSION['user_name'] = 'Администратор';
-        header("Location: admin.php"); // Уходим в админку
+        header("Location: admin.php");
         exit;
     }
-    // --------------------------
 
     if($_POST['act'] == 'reg') {
         $n = $_POST['name'];
         $hp = password_hash($pass, PASSWORD_DEFAULT);
-        // Используй подготовленные выражения в будущем для защиты от инъекций!
         $conn->query("INSERT INTO users (name, phone, password) VALUES ('$n', '$p', '$hp')");
         $_SESSION['user_name'] = $n;
         $_SESSION['user_role'] = 'user';
@@ -39,30 +36,41 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | FoodFast</title>
+    <!-- Подключаем шрифт Creepster для лого как в админке -->
+    <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="display:flex; justify-content:center; align-items:center; min-height:100vh; background: #f4f4f4;">
-    <div style="background:#fff; padding:40px; border-radius:24px; width:320px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h2 id="t">Вход</h2>
+<body class="auth-page">
+
+    <div class="card" style="width: 360px; text-align: center;">
+        <div class="logo" style="margin-bottom: 20px;">Food<span>Fast</span></div>
+        <h2 id="t" style="margin-bottom: 20px; color: #fff;">Вход</h2>
+        
         <form method="POST">
             <input type="hidden" name="act" id="act" value="login">
-            <input type="text" name="name" id="in" placeholder="Имя" style="display:none; width:100%; padding:10px; margin-bottom:10px; border: 1px solid #ddd; border-radius: 8px;">
-            <!-- Для админа вводи сюда "admin" -->
-            <input type="text" name="phone" placeholder="Телефон или логин" required style="width:100%; padding:10px; margin-bottom:10px; border: 1px solid #ddd; border-radius: 8px;">
-            <input type="password" name="pass" placeholder="Пароль" required style="width:100%; padding:10px; margin-bottom:10px; border: 1px solid #ddd; border-radius: 8px;">
-            <button type="submit" style="width:100%; padding:12px; background: orange; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Продолжить</button>
+            
+            <input type="text" name="name" id="in" class="auth-input" placeholder="Ваше имя" style="display:none;">
+            <input type="text" name="phone" class="auth-input" placeholder="Логин (admin)" required>
+            <input type="password" name="pass" class="auth-input" placeholder="Пароль (admin)" required>
+            
+            <button type="submit" class="btn btn-primary btn-full">Продолжить</button>
         </form>
-        <button onclick="toggle()" style="background:none; border:none; color:orange; margin-top:20px; cursor:pointer; width: 100%;">Создать аккаунт</button>
+        
+        <button onclick="toggle(event)" class="btn btn-primary btn-full btn-switch" id="toggle-btn">Создать аккаунт</button>
     </div>
 
     <script>
-        function toggle() {
+        function toggle(e) {
+            e.preventDefault();
             const isL = document.getElementById('act').value === 'login';
             document.getElementById('act').value = isL ? 'reg' : 'login';
             document.getElementById('in').style.display = isL ? 'block' : 'none';
+            document.getElementById('in').required = isL;
+            
             document.getElementById('t').innerText = isL ? 'Регистрация' : 'Вход';
-            event.target.innerText = isL ? 'Уже есть аккаунт? Войти' : 'Создать аккаунт';
+            document.getElementById('toggle-btn').innerText = isL ? 'Уже есть аккаунт? Войти' : 'Создать аккаунт';
         }
     </script>
 </body>

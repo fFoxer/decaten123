@@ -4,146 +4,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodFast — Хеллоуинская доставка!</title>
+    <title>FoodFast — Жуткая доставка!</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Подключаем жуткий шрифт для заголовков -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <style>
-        /* Стили для сетки ресторанов */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 30px; 
-            margin-top: 20px; 
-        }
-        
-        .restaurant-card {
-            background: #2A2A2A; /* Темный фон для карточки */
-            border-radius: 24px;
-            overflow: hidden;
-            text-decoration: none;
-            color: #E0E0E0; /* Светлый текст */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: block;
-            border: 1px solid #444; /* Темная граница */
-        }
-        .restaurant-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(255, 92, 0, 0.3); /* Оранжевое свечение */
-        }
-        .res-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        .res-badge {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            background: #1a1a1a;
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        }
-        .res-info { padding: 20px; }
-        .res-info h3 { 
-            margin: 0 0 8px 0; 
-            font-size: 28px; /* Увеличим шрифт */
-            font-family: 'Creepster', cursive; /* Применяем жуткий шрифт */
-            color: #fff;
-            letter-spacing: 1px;
-        }
-        .res-meta { color: #aaa; font-size: 15px; display: flex; gap: 10px; }
-        
-        .categories { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; padding-bottom: 5px; }
-        .cat-item { 
-            background: #333; 
-            color: #ddd;
-            padding: 12px 24px; 
-            border-radius: 25px; 
-            cursor: pointer; 
-            white-space: nowrap; 
-            transition: 0.3s;
-            border: 1px solid #555; 
-            font-weight: 500;
-        }
-        .cat-item.active, .cat-item:hover { 
-            background: var(--primary); 
-            color: #000; /* Темный текст на оранжевом фоне */
-            border-color: var(--primary); 
-            transform: scale(1.05);
-        }
-        .restaurant-card.hidden { display: none; }
-    </style>
+    <!-- Подключаем жуткий шрифт -->
+    <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
     <header class="header">
         <div class="container flex-sb">
-            <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span></div>
+            <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span> 🎃</div>
             
-            <div class="auth-block" style="display: flex; align-items: center; gap: 20px;">
+            <div class="auth-block" style="display: flex; align-items: center; gap: 15px;">
                 <?php if(isset($_SESSION['user_name'])): ?>
-                    <span style="font-size: 14px; color: #eee;">Привет, <b><?= htmlspecialchars($_SESSION['user_name']) ?></b></span>
-                    <a href="logout.php" style="font-size: 12px; color: #aaa; text-decoration: none;">Выйти</a>
+                    <span class="user-greeting">
+                        💀 Привет, <b><?= htmlspecialchars($_SESSION['user_name']) ?></b>
+                    </span>
+                    
+                    <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                        <a href="admin.php" class="btn btn-secondary">Админка</a>
+                    <?php endif; ?>
+                    
+                    <a href="logout.php" class="btn btn-primary">Выйти</a>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-secondary">Войти</a>
+                    <a href="login.php" class="btn btn-primary">Войти</a>
                 <?php endif; ?>
                 
-                <a href="cart.html" class="btn btn-primary" style="text-decoration: none; font-size: 20px;">
+                <a href="cart.html" class="btn btn-secondary" style="font-size: 20px; padding: 10px 15px;">
                     🎃 <span id="cart-count">0</span>
                 </a>
             </div>
         </div>
     </header>
+
     <main class="container">
-        <h1 style="margin-top: 40px; font-size: 52px; font-family: 'Creepster', cursive; text-align: center; color: #fff; letter-spacing: 2px;">🎃 Жутко вкусные рестораны 🎃</h1>
+        <h1 style="margin-top: 40px; font-size: 52px; font-family: 'Creepster', cursive; text-align: center; color: #fff;">🎃 Жутко вкусные рестораны 🎃</h1>
         
-        <!-- Фильтр по типам кухни -->
-        <section class="categories">
-            <div class="cat-item active" data-filter="all">Все</div>
-            <div class="cat-item" data-filter="burgers">👻 Бургеры</div>
-            <div class="cat-item" data-filter="pizza">💀 Пицца</div>
-            <div class="cat-item" data-filter="sushi">🕷️ Суши</div>
-            <div class="cat-item" data-filter="desserts">🍬 Десерты</div>
-        </section>
+        <!-- КАТЕГОРИИ СО СТРЕЛКАМИ (ТВОЙ ВАРИАНТ) -->
+        <div class="categories-wrapper">
+            <button class="nav-btn prev" onclick="scrollCats(-250)"> < </button>
+            
+            <section class="categories" id="cat-list">
+                <div class="cat-item active" data-filter="all">Все</div>
+                <div class="cat-item" data-filter="burgers">🍔 Бургеры</div>
+                <div class="cat-item" data-filter="pizza">🍕 Пицца</div>
+                <div class="cat-item" data-filter="sushi">🍣 Суши</div>
+                <div class="cat-item" data-filter="pasta">🍝 Паста</div>
+                <div class="cat-item" data-filter="russian">🥞 Русская</div>
+                <div class="cat-item" data-filter="salads">🥗 Салаты</div>
+                <div class="cat-item" data-filter="khinkali">🥟 Хинкали</div>
+                <div class="cat-item" data-filter="shawarma">🌯 Шаурма</div>
+                <div class="cat-item" data-filter="wok">🍜 WOK</div>
+                <div class="cat-item" data-filter="snacks">🍟 Снэки</div>
+                <div class="cat-item" data-filter="drinks">🥤 Напитки</div>
+                <div class="cat-item" data-filter="desserts">🍩 Десерты</div>
+            </section>
+
+            <button class="nav-btn next" onclick="scrollCats(250)"> > </button>
+        </div>
 
         <div class="grid">
             <?php
-            // Получаем список ресторанов из базы данных
-            $query = "SELECT * FROM restaurants";
-            $result = $conn->query($query);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
+            $res = $conn->query("SELECT * FROM restaurants ORDER BY id DESC");
+            if ($res && $res->num_rows > 0) {
+                while($row = $res->fetch_assoc()) {
                     ?>
+                    <!-- data-cat хранит теги для фильтрации, но на экран они не выводятся -->
                     <a href="restaurant.php?id=<?= $row['id'] ?>" class="restaurant-card" data-cat="<?= $row['tag'] ?>">
                         <div class="res-img" style="background-image: url('<?= $row['img'] ?>')">
-                            <div class="res-badge"><?= $row['delivery_time'] ?></div>
+                            <div class="res-badge"><?= htmlspecialchars($row['delivery_time']) ?></div>
                         </div>
                         <div class="res-info">
                             <h3><?= htmlspecialchars($row['name']) ?></h3>
-                            <div class="res-meta">
-                                <span>★ 4.8</span>
-                                <span>•</span>
-                                <span><?= htmlspecialchars($row['tag']) ?></span>
+                            <div style="color: #aaa; font-size: 15px;">
+                                <span style="color: var(--primary);">★ 4.9</span> • Доставка FoodFast 🦇
                             </div>
                         </div>
                     </a>
                     <?php
                 }
             } else {
-                echo "<p style='color: #fff;'>Рестораны пока не добавлены в базу данных.</p>";
+                echo "<p style='color: #888; text-align: center; width: 100%; grid-column: 1/-1;'>Ресторанов пока нет.</p>";
             }
             ?>
         </div>
     </main>
+
     <script>
-        // 1. Фильтрация ресторанов по категориям
+        // Функция для прокрутки категорий
+        function scrollCats(distance) {
+            const container = document.getElementById('cat-list');
+            container.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+
+        // Фильтрация ресторанов по нескольким категориям
         document.querySelectorAll('.cat-item').forEach(item => {
             item.onclick = () => {
                 document.querySelector('.cat-item.active').classList.remove('active');
@@ -151,7 +104,10 @@
                 
                 const filter = item.dataset.filter;
                 document.querySelectorAll('.restaurant-card').forEach(card => {
-                    if (filter === 'all' || card.dataset.cat === filter) {
+                    // Разрезаем строку категорий из БД (например, "burgers,snacks") в массив
+                    const restaurantTags = card.dataset.cat.split(',');
+                    
+                    if (filter === 'all' || restaurantTags.includes(filter)) {
                         card.classList.remove('hidden');
                     } else {
                         card.classList.add('hidden');
@@ -160,11 +116,12 @@
             }
         });
 
-        // 2. Обновление счетчика корзины (общий для всех страниц)
+        // Счетчик корзины
         function updateGlobalBadge() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const count = cart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cart-count').innerText = count;
+            const el = document.getElementById('cart-count');
+            if(el) el.innerText = count;
         }
         document.addEventListener('DOMContentLoaded', updateGlobalBadge);
     </script>

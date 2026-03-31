@@ -3,59 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корзина — FoodFast</title>
+    <title>Мой котел — FoodFast</title>
     <link rel="stylesheet" href="style.css">
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         .cart-grid { display: grid; grid-template-columns: 1fr 380px; gap: 30px; margin-top: 30px; align-items: start; }
-        .cart-item { display: grid; grid-template-columns: 80px 1fr 120px 100px; align-items: center; gap: 20px; background: #2A2A2A; padding: 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #444; }
-        .item-img { width: 70px; height: 70px; border-radius: 12px; background: #444 center/cover; }
-        .item-info h3 { margin: 0 0 5px 0; font-size: 18px; color: #fff;}
-        .item-info p { margin: 0; color: #aaa; font-size: 14px; }
-        .qty-btns { display: flex; align-items: center; justify-content: center; gap: 12px; background: #333; padding: 8px; border-radius: 12px; width: 100px; }
-        .q-btn { border: none; background: #444; color: #eee; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .cart-item { display: grid; grid-template-columns: 80px 1fr 140px 100px; align-items: center; gap: 20px; background: #2A2A2A; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid #444; }
+        .item-img { width: 70px; height: 70px; border-radius: 12px; background: #444 center/cover; border: 1px solid #555; }
+        .item-info h3 { margin: 0 0 5px 0; font-size: 18px; color: #fff; }
+        .qty-btns { display: flex; align-items: center; justify-content: center; gap: 15px; background: #333; padding: 8px; border-radius: 12px; width: 110px; border: 1px solid #444; }
+        .q-btn { border: none; background: #444; color: #eee; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.2s; }
+        .q-btn:hover { background: var(--primary); color: #fff; }
         .price-total { font-weight: bold; font-size: 18px; text-align: right; color: #fff; }
-        .checkout-side { background: #2A2A2A; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: sticky; top: 120px; border: 1px solid #444;}
-        .checkout-side h3 { color: var(--primary); }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 16px; }
-        .total-row { font-size: 22px; font-weight: bold; border-top: 1px solid #555; padding-top: 20px; margin-top: 20px; }
-        .address-input { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #555; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #333; color: #eee; }
-        .address-input:focus { border-color: var(--primary); outline: none; }
-        @media (max-width: 900px) {
-             .cart-grid { grid-template-columns: 1fr; }
-             /* ... (остальные медиа-запросы) ... */
-        }
+        .checkout-side { background: #2A2A2A; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: sticky; top: 120px; border: 1px solid #444; }
+        .checkout-side h3 { color: var(--primary); font-family: 'Creepster', cursive; font-size: 28px; margin-bottom: 20px; }
+        .total-row { font-size: 24px; font-weight: bold; color: #fff; border-top: 1px solid #444; padding-top: 20px; margin-top: 20px; }
+        .address-input { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #555; border-radius: 12px; background: #333; color: #eee; }
     </style>
 </head>
 <body style="background: #1A1A1A; color: #eee;">
     <header class="header">
         <div class="container flex-sb">
-            <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span></div>
-            <a href="index.php" style="text-decoration: none; color: var(--primary); font-weight: 600;">← Вернуться в меню</a>
+            <div class="logo" onclick="location.href='index.php'">Food<span>Fast</span> 🎃</div>
+            <a href="index.php" class="btn btn-secondary">← В меню</a>
         </div>
     </header>
+
     <main class="container">
-        <h1 style="margin: 30px 0; font-family: 'Creepster', cursive; font-size: 52px; color: #fff;">Мой котел 🧙</h1>
-        
-        <div id="cart-wrapper">
-            <!-- Сюда JS вставит сетку или сообщение о пустоте -->
-        </div>
+        <h1 style="margin: 40px 0; font-family: 'Creepster', cursive; font-size: 64px; color: #fff; text-align: center;">Мой котел 🧙‍♂️</h1>
+        <div id="cart-wrapper"></div>
     </main>
+
     <script>
- function renderCart() {
+        // ГЛАВНАЯ ФУНКЦИЯ ОТРИСОВКИ
+        function renderCart() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const wrapper = document.getElementById('cart-wrapper');
             
             if (cart.length === 0) {
                 wrapper.innerHTML = `
-                    <div style="text-align:center; padding:80px 20px; background:#fff; border-radius:30px;">
-                        <span style="font-size: 50px;">🛒</span>
-                        <h2>В корзине пока пусто</h2>
-                        <p style="color:#888;">Выберите что-нибудь вкусное в меню</p>
-                        <br>
-                        <a href="index.php" class="btn btn-primary">Перейти к ресторанам</a>
+                    <div class="card" style="text-align:center; padding:80px 20px; border: 2px dashed #444;">
+                        <span style="font-size: 80px; display: block; margin-bottom: 20px;">🛒</span>
+                        <h2 style="font-size: 32px; color: #fff;">В котле пусто...</h2>
+                        <br><a href="index.php" class="btn btn-primary">Наполнить котел</a>
                     </div>`;
                 return;
             }
@@ -71,12 +61,12 @@
                         <div class="item-img" style="background-image: url('${item.img}')"></div>
                         <div class="item-info">
                             <h3>${item.name}</h3>
-                            <p>${item.price} ₽</p>
+                            <p style="color: var(--primary);">${item.price} ₽</p>
                         </div>
                         <div class="qty-btns">
-                            <button class="q-btn" onclick="updateQty(${index}, -1)">-</button>
-                            <span style="font-weight:600">${item.qty}</span>
-                            <button class="q-btn" onclick="updateQty(${index}, 1)">+</button>
+                            <button class="q-btn" onclick="window.updateQty(${index}, -1)">-</button>
+                            <span style="color: #fff; font-weight: bold;">${item.qty}</span>
+                            <button class="q-btn" onclick="window.updateQty(${index}, 1)">+</button>
                         </div>
                         <div class="price-total">${itemTotal} ₽</div>
                     </div>`;
@@ -84,63 +74,57 @@
 
             wrapper.innerHTML = `
                 <div class="cart-grid">
-                    <div id="items-list">${itemsHtml}</div>
-                    
+                    <div>${itemsHtml}</div>
                     <aside class="checkout-side">
-                        <h3 style="margin-top:0">Детали заказа</h3>
-                        <div class="summary-row">
-                            <span>Блюда</span>
-                            <span>${totalSum} ₽</span>
+                        <h3>Детали заказа</h3>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:#aaa;">
+                            <span>Товары</span><span>${totalSum} ₽</span>
                         </div>
-                        <div class="summary-row">
-                            <span>Доставка</span>
-                            <span style="color:#27AE60; font-weight:600;">Бесплатно</span>
+                        <div style="display:flex; justify-content:space-between; color:var(--primary); font-weight:bold;">
+                            <span>Доставка</span><span>Бесплатно</span>
                         </div>
-
-                        <div style="margin-top:25px;">
-                            <label style="font-weight:600; font-size:14px; color:#555;">Адрес доставки:</label>
-                            <input type="text" id="delivery-address" class="address-input" placeholder="Улица, дом, квартира">
+                        <input type="text" id="delivery-address" class="address-input" placeholder="Введите ваш адрес">
+                        <div class="total-row" style="display:flex; justify-content:space-between;">
+                            <span>Итого</span><span>${totalSum} ₽</span>
                         </div>
-
-                        <div class="summary-row total-row">
-                            <span>Итого</span>
-                            <span>${totalSum} ₽</span>
-                        </div>
-
-                        <button class="btn btn-primary btn-full" style="height:55px; margin-top:20px;" onclick="placeOrder()">
-                            Оформить заказ
-                        </button>
+                        <button class="btn btn-primary btn-full" style="margin-top:20px;" onclick="placeOrder()">Оформить заказ ☠️</button>
                     </aside>
                 </div>`;
         }
 
+        // ФУНКЦИЯ ОБНОВЛЕНИЯ (ИСПРАВЛЕНО)
         window.updateQty = function(index, delta) {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart[index].qty += delta;
-            if (cart[index].qty <= 0) cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
+            
+            if (cart[index]) {
+                cart[index].qty += delta;
+
+                // Если стало 0 — удаляем из списка
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart(); // Мгновенно обновляем экран
+            }
         };
 
         function placeOrder() {
-            const address = document.getElementById('delivery-address').value;
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            if (!address || address.trim().length < 5) {
-                alert("Пожалуйста, введите полный адрес доставки!");
-                return;
-            }
+    const address = document.getElementById('delivery-address').value;
+    if (!address || address.trim().length < 5) {
+        alert("Пожалуйста, введите адрес доставки!");
+        return;
+    }
+    
+    // Сохраняем адрес, чтобы показать его на карте
+    localStorage.setItem('last_address', address);
+    // Очищаем корзину
+    localStorage.removeItem('cart');
+    
+    // ПЕРЕХОДИМ НА КАРТУ
+    window.location.href = 'order_status.php';
+}
 
-            // Сохраняем финальные данные для страницы трекера
-            localStorage.setItem('last_address', address);
-            localStorage.setItem('order_details', JSON.stringify(cart));
-            
-            // Очищаем корзину (так как заказ оформлен)
-            localStorage.removeItem('cart');
-            
-            // Переходим на страницу статуса
-            window.location.href = 'order_status.php';
-        }
 
         document.addEventListener('DOMContentLoaded', renderCart);
     </script>

@@ -1,13 +1,33 @@
+/* --- 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ --- */
 :root { 
     --primary: #FF5C00; 
-    --bg: #1A1A1A; /* Очень темный фон */
+    --bg: #1A1A1A; 
+    --card-bg: #2A2A2A;
+    --input-bg: #333;
+    --text: #E0E0E0;
+}
+
+/* --- 2. БАЗОВЫЕ СТИЛИ --- */
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
 }
 
 body { 
     font-family: 'Segoe UI', sans-serif; 
     background: var(--bg); 
-    margin: 0; 
-    color: #E0E0E0; /* Светлый цвет текста по умолчанию */
+    color: var(--text); 
+}
+
+/* --- 3. ЦЕНТРОВКА ДЛЯ ВХОДА --- */
+body.auth-page {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    width: 100% !important;
 }
 
 .container { 
@@ -16,79 +36,158 @@ body {
     padding: 0 20px; 
 }
 
+/* --- 4. ШАПКА (HEADER) --- */
 .header { 
-    background: #252525; /* Фон шапки чуть светлее основного */
+    background: #252525; 
     padding: 15px 0; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Более выраженная тень */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
     position: sticky; 
     top: 0; 
     z-index: 100;
-    border-bottom: 2px solid var(--primary); /* Оранжевая полоска снизу */
+    border-bottom: 2px solid var(--primary); 
 }
 
-.flex-sb { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
+.flex-sb { display: flex; justify-content: space-between; align-items: center; }
+
+/* Приветствие пользователя */
+.user-greeting {
+    font-size: 18px; /* Чуть крупнее */
+    font-weight: 500;
+    margin-right: 15px;
+    color: #fff;
 }
 
+.user-greeting b {
+    color: var(--primary);
+    text-shadow: 0 0 5px rgba(255, 92, 0, 0.3);
+}
+
+/* --- 5. ЛОГОТИП --- */
 .logo { 
-    font-size: 30px; /* Увеличим лого */
-    font-family: 'Creepster', cursive; /* Применяем жуткий шрифт */
+    font-size: 30px; 
+    font-family: 'Creepster', cursive; 
     font-weight: bold; 
     cursor: pointer;
-    color: #fff;
+    color: #fff !important;
     letter-spacing: 1.5px;
+    text-decoration: none;
 }
 
 .logo span { 
-    color: var(--primary); 
-    text-shadow: 0 0 10px var(--primary); /* Добавим свечение */
+    color: var(--primary) !important; 
+    text-shadow: 0 0 10px var(--primary); 
 }
 
+/* --- 6. КНОПКИ --- */
 .btn { 
     border: none; 
-    padding: 10px 20px; 
-    border-radius: 10px; 
+    padding: 12px 20px; 
+    border-radius: 12px; 
     cursor: pointer; 
     font-weight: 600; 
-    text-decoration: none; 
+    text-decoration: none !important; 
     transition: 0.3s;
+    display: inline-block;
+    color: #fff !important;
 }
 
 .btn-primary { 
     background: var(--primary); 
-    color: #fff; 
-    box-shadow: 0 0 15px rgba(255, 92, 0, 0.5);
-}
-.btn-primary:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 92, 0, 0.8);
+    box-shadow: 0 0 15px rgba(255, 92, 0, 0.4);
 }
 
-.btn-secondary { 
-    background: #444; 
-    color: #eee; 
+.btn-primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(255, 92, 0, 0.7);
 }
+
+.btn-secondary {
+    background: #444;
+    color: #eee !important;
+}
+
 .btn-secondary:hover {
     background: #555;
+    color: #fff !important;
 }
 
-.btn-full { 
-    width: 100%; 
-    display: block; 
-    text-align: center; 
-}
+.btn-full { width: 100%; text-align: center; margin-top: 10px; }
 
+/* --- 7. КАРТОЧКИ И ИНПУТЫ --- */
 .card { 
-    background: #2A2A2A; 
-    border-radius: 20px; 
-    overflow: hidden; 
+    background: var(--card-bg); 
+    border-radius: 24px; 
+    padding: 30px;
     transition: 0.3s; 
     border: 1px solid #444;
 }
 
-.card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 25px rgba(255, 92, 0, 0.3);
+.auth-input {
+    width: 100%;
+    padding: 14px 18px;
+    margin: 8px 0;
+    background: var(--input-bg);
+    border: 1px solid #444;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
 }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-top: 20px; padding-bottom: 50px; }
+        .restaurant-card { background: #2A2A2A; border-radius: 24px; overflow: hidden; text-decoration: none; color: #E0E0E0; transition: 0.3s; display: block; border: 1px solid #444; }
+        .restaurant-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(255, 92, 0, 0.3); }
+        .res-img { height: 200px; background-size: cover; background-position: center; position: relative; }
+        .res-badge { position: absolute; bottom: 15px; left: 15px; background: #1a1a1a; color: var(--primary); padding: 5px 12px; border-radius: 10px; font-weight: bold; font-size: 14px; }
+        .res-info { padding: 20px; }
+        .res-info h3 { margin: 0 0 8px 0; font-size: 28px; font-family: 'Creepster', cursive; color: #fff; }
+        
+        /* НОВАЯ ОБЕРТКА ДЛЯ КАТЕГОРИЙ */
+        .categories-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .categories { 
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            width: 100%;
+            border-radius: 40px;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+        
+        .cat-item { background: #333; color: #ddd; padding: 12px 24px; border-radius: 25px; cursor: pointer; white-space: nowrap; transition: 0.3s; border: 1px solid #555; }
+        .cat-item.active, .cat-item:hover { background: var(--primary); color: #fff !important; transform: scale(1.05); }
+        
+        /* КНОПКИ НАВИГАЦИИ */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 92, 0, 0.4);
+            font-size: 20px;
+            transition: 0.3s;
+            font-weight: 525;
+        
+        }
+        .nav-btn:hover { transform: translateY(-50%) scale(1.1); box-shadow: 0 0 25px rgba(255, 92, 0, 0.7); }
+        .nav-btn.prev { left: -50px; }
+        .nav-btn.next { right: -50px; }
+
+        .restaurant-card.hidden { display: none; }
